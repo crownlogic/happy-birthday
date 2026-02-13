@@ -1,158 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="shortcut icon" type="image/png" href="img/favicon.png" />
-  <title>Happy Birthday!!! :)</title>
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-  <!-- My Style -->
-  <link rel="stylesheet" href="./style/main.css" />
-</head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday Magasela 🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --blush:  #f7a8c4;
+      --rose:   #e8698a;
+      --hot:    #d63b6e;
+      --lilac:  #c8a5e0;
+      --lav:    #b07fd4;
+      --mauve:  #9b59b6;
+    }
+
+    body { font-family: 'Lato', sans-serif; margin: 0; background: #160820; cursor: none; }
+
+    /* ── CURSOR ── */
+    #cursor, #cring {
+      position: fixed; left: 0; top: 0;
+      transform: translate(-50%,-50%); pointer-events: none; border-radius: 50%;
+    }
+    #cursor { width: 12px; height: 12px; background: radial-gradient(circle, var(--rose), var(--lav)); z-index: 9999; mix-blend-mode: screen; }
+    #cring  { width: 28px; height: 28px; border: 1.5px solid rgba(200,165,224,.55); z-index: 9998; transition: transform .12s ease; }
+
+    /* ── PETAL CANVAS ── */
+    #petalCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+
+    /* ── AUDIO ── */
+    .song { visibility: hidden; position: absolute; }
+
+    /* ── CONTAINER ── */
+    .container {
+      height: 100vh; overflow: hidden; position: relative;
+      text-align: center; visibility: hidden; width: 100vw; z-index: 2;
+      background: radial-gradient(ellipse at 30% 28%, #6d3b7a 0%, #2f1b3a 75%);
+    }
+
+    .container > div { left: 0; position: absolute; right: 0; top: 15vh; }
+
+    /* ── SECTION 1: GREETING ── */
+    .sec-greeting h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 9vw, 5.5rem); font-weight: 900; color: #fff; line-height: 1.2;
+    }
+    .sec-greeting h1 .nname {
+      display: block;
+      background: linear-gradient(135deg, var(--hot) 0%, var(--rose) 40%, var(--lav) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .sub-greeting {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: clamp(1rem, 2.8vw, 1.4rem); color: var(--blush);
+      margin-top: .9rem; letter-spacing: .06em;
+    }
+
+    /* ── SECTION 3: BIRTHDAY ── */
+    .sec-bday { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 3.8rem); color: #fff; }
+    .sec-bday p { margin: 0; }
+
+    /* ── SECTION 4: CHAT BUBBLE ── */
+    .sec-chat .text-box {
+      border: 1.5px solid rgba(200,165,224,.28); border-radius: 18px;
+      margin: 0 auto; padding: 1.4rem 1.6rem; position: relative;
+      width: min(620px, 90vw); background: rgba(255,255,255,.055); backdrop-filter: blur(12px);
+    }
+    .hbd-chatbox {
+      margin: 0; text-align: left;
+      font-family: 'Cormorant Garamond', serif; font-size: clamp(.9rem, 2vw, 1.1rem);
+      color: #fff; line-height: 1.85;
+    }
+    .text-box span { visibility: hidden; }
+    .fake-btn {
+      border-radius: 20px; bottom: -46px; color: #fff; padding: .5rem 1.4rem;
+      position: absolute; right: 12px; font-size: .76rem; letter-spacing: .12em;
+      text-transform: uppercase; background: linear-gradient(135deg, var(--rose), var(--lav));
+    }
+
+    /* ── SECTION 5: IDEAS ── */
+    .sec-ideas p {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 4vw, 2.4rem); left: 0; position: absolute; right: 0; color: #fff;
+    }
+    .idea-3 strong { border-radius: 4px; display: inline-block; padding: 1px 10px; }
+    .idea-5 { font-size: clamp(2.5rem, 7vw, 4.5rem) !important; }
+    .idea-5 span, .idea-6 span, .wish-hbd span { display: inline-block; }
+    .idea-6 span {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(7rem, 18vw, 13rem) !important;
+      background: linear-gradient(135deg, var(--hot), var(--lav));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* ── POLAROID PHOTOS ── */
+    .sec-photos {
+      top: 50% !important;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 1.2rem;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 0 2rem;
+    }
+    
+    .photo-card {
+      flex: 0 0 auto; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,.65), 0 0 0 1px rgba(200,165,224,.15);
+    }
+    .photo-card img {
+      display: block;
+      width: clamp(140px, 22vw, 260px);
+      height: clamp(170px, 28vw, 320px);
+      object-fit: cover;
+    }
+
+    .photo-caption { background: #fff; padding: .5rem .7rem .6rem; text-align: center; }
+    .photo-caption span {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: .75rem; color: var(--mauve);
+    }
+
+    
+
+    /* ── SECTION 6: PROFILE + WISH ── */
+    
+    .sec-profile { 
+      top: 50% !important;
+      transform: translateY(-50%);
+      text-align: center;
+    }
+
+    .profile-wrapper { position: relative; display: inline-block; }
+    .profile-picture {
+      
+      display: block;
+      width: clamp(220px, 35vw, 380px);
+      height: clamp(220px, 35vw, 380px);
+      object-fit: cover; border-radius: 50%;
+      border: 3px solid rgba(247,168,196,.45);
+      box-shadow: 0 0 55px rgba(200,165,224,.22), 0 0 100px rgba(214,59,110,.12);
+    }
+    .party-hat {
+      position: absolute; top: -50px; left: 50%;
+      transform: translateX(-58%) rotate(-15deg); width: 90px;
+    }
+    .wish { margin-top: 1.3rem; }
+    .wish-hbd {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      margin: 0; text-transform: uppercase; color: #fff; letter-spacing: .06em;
+    }
+    .wish h5 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2.5vw, 1.55rem);
+      font-style: italic; font-weight: 300; margin: .5rem 0 0; color: var(--blush);
+    }
+
+    /* ── BALLOONS ── */
+    .sec-balloons, .sec-circles {
+      height: 100vh; position: fixed !important; top: 0 !important; width: 100vw; pointer-events: none;
+    }
+    .sec-balloons { z-index: 4; }
+    .sec-circles  { z-index: 0; }
+    .baloons { width: 100%; height: 100%; position: relative; }
+    .balloon {
+      position: absolute; width: 34px; height: 44px;
+      border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; opacity: 0;
+    }
+    .balloon::before {
+      content: ''; position: absolute; bottom: -1px; left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent; border-right: 4px solid transparent;
+      border-top: 7px solid currentColor;
+    }
+    .balloon::after {
+      content: ''; position: absolute; bottom: -22px; left: 50%;
+      transform: translateX(-50%); width: 1px; height: 22px;
+      background: rgba(255,255,255,.22);
+    }
+
+    /* ── CIRCLES ── */
+    .sec-circles svg {
+      left: 0; position: absolute; top: 0; visibility: hidden; width: 25px; z-index: -1;
+    }
+    .sec-circles svg:nth-child(1) { fill: var(--rose);  left: 5vw;  top: 7vh;  }
+    .sec-circles svg:nth-child(2) { fill: var(--lilac); left: 35vw; top: 23vh; }
+    .sec-circles svg:nth-child(3) { fill: var(--lav);   left: 23vw; top: 33vh; }
+    .sec-circles svg:nth-child(4) { fill: var(--blush); left: 57vw; top: 43vh; }
+    .sec-circles svg:nth-child(5) { fill: var(--hot);   left: 7vw;  top: 68vh; }
+    .sec-circles svg:nth-child(6) { fill: var(--mauve); left: 77vw; top: 42vh; }
+    .sec-circles svg:nth-child(7) { fill: var(--blush); left: 83vw; top: 68vh; }
+    .sec-circles svg:nth-child(8) { fill: var(--lilac); left: 37vw; top: 86vh; }
+    .sec-circles svg:nth-child(9) { fill: var(--rose);  left: 87vw; top: 94vh; }
+
+    /* ── FINAL ── */
+    .sec-final { top: 28vh !important; }
+    .sec-final p {
+      font-family: 'Playfair Display', serif; font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+      font-weight: 300; color: #fff; margin-bottom: .3rem;
+    }
+    #replay { cursor: pointer; color: var(--blush) !important; font-style: italic; text-decoration: underline; text-underline-offset: 4px; }
+    #replay:hover { color: var(--rose) !important; }
+    .last-smile { color: var(--lav) !important; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 580px) {
+      .sec-photos { flex-wrap: wrap; top: 6vh !important; }
+    }
+  </style>
+</head>
 <body>
 
-    <audio class="song" loop autoplay>
-        <source src="./music/hbd.mpeg">
-        </source>
-        Your browser isn't invited for super fun audio time.
-    </audio>
+  <div id="cursor"></div>
+  <div id="cring"></div>
+  <canvas id="petalCanvas"></canvas>
 
-    <div class="container">
-        <div class="one">
-            <h1 class="one">
-                Hi
-                <span id="name">Irene</span>
-            </h1>
-            <p class="two" id="greetingText">I really like your name btw!</p>
-        </div>
+  <!-- To add music: replace src="" with your audio file path, e.g. src="./hbd.mp3" -->
+  <audio class="song" loop><source src="" type="audio/mpeg"/></audio>
 
-        <div class="three">
-            <p>It's your birthday!! :D</p>
-        </div>
+  <div class="container">
 
-        <div class="four">
-            <div class="text-box">
-                <p class="hbd-chatbox">
-                Happy birthday to youu!! Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quisquam amet ipsam vitae, voluptatum architecto aliquid id quo error tempora quos aperiam magni necessitatibus quas ut, possimus nesciunt nam ad.
-                </p>
-                <p class="fake-btn">Send</p>
-            </div>
-        </div>
-
-        <div class="five">
-            <p class="idea-1">That's what I was going to do.</p>
-            <p class="idea-2">But then I stopped.</p>
-            <p class="idea-3">
-                I realised, I wanted to do something<br>
-                <strong>special</strong>
-                .
-            </p>
-            <p class="idea-4">Because,</p>
-            <p class="idea-5">
-                You are Special
-                <span>:)</span>
-            </p>
-            <p class="idea-6">
-                <span>S</span>
-                <span>O</span>
-            </p>
-        </div>
-
-        <div class="six">
-            <img src="./img/irene.jpg" alt="profile" class="profile-picture" id="imagePath"/>
-            <img src="img/hat.svg" alt="hat" class="hat" />
-            <div class="wish">
-                <h3 class="wish-hbd">Happy Birthday!</h3>
-                <h5 id="wishText">May the js.prototypes always be with you! ;)</h5>
-            </div>
-        </div>
-
-        <div class="seven">
-            <div class="baloons">
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon2.svg" alt="" />
-                <img src="img/ballon1.svg" alt="" />
-                <img src="img/ballon3.svg" alt="" />
-            </div>
-        </div>
-
-        <div class="eight">
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" />
-            </svg>
-        </div>
-
-        <div class="nine">
-            <p>Okay, now come back and tell me if you liked it.</p>
-            <p id="replay">Or click, if you want to watch it again.</p>
-            <p class="last-smile">:)</p>
-        </div>
+    <!-- 1 · GREETING -->
+    <div class="sec-greeting">
+      <h1>Sawubona <span class="nname">Magasela</span></h1>
+      <p class="sub-greeting">Your day has finally arrived...</p>
     </div>
 
-</body>
-    <!-- Greensock -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-    <!-- Sweetalert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="application/javascript" src="./script/main.js"></script>
+    <!-- 3 · IT'S YOUR BIRTHDAY -->
+    <div class="sec-bday"><p>It's your birthday!! 🎂</p></div>
 
+    <!-- 4 · CHAT BUBBLE -->
+    <div class="sec-chat">
+      <div class="text-box">
+        <p class="hbd-chatbox">Happy birthday, Magasela! You've crossed oceans, chased your dreams, and seasoned the world with your beautiful spirit. Ngikufisela izilokotho ezinhle onyakeni wakho omusha! 🌸💜</p>
+        <p class="fake-btn">Send</p>
+      </div>
+    </div>
+
+    <!-- 5 · IDEA TEXT -->
+    <div class="sec-ideas">
+      <p class="idea-1">Bengizosho lokho kuphela.</p>
+      <p class="idea-2">But then I stopped.</p>
+      <p class="idea-3">Ngoba I wanted to do something <strong>special</strong>.</p>
+      <p class="idea-4">Because,</p>
+      <p class="idea-5">You are Special <span>:)</span></p>
+      <p class="idea-6"><span>S</span><span>O</span></p>
+    </div>
+
+    <!-- POLAROID PHOTOS -->
+    <div class="sec-photos">
+      <div class="photo-card">
+        <img src="IMG-20251129-WA0003.jpg" alt="Noluthando"/>
+        <div class="photo-caption"><span>Our beautiful girl 🌸</span></div>
+      </div>
+      <div class="photo-card">
+        <img src="IMG-20251207-WA0009.jpg" alt="Noluthando"/>
+        <div class="photo-caption"><span>Living the dream kwela Trump✨</span></div>
+      </div>
+      <div class="photo-card">
+        <img src="IMG-20251213-WA0033.jpg" alt="Noluthando"/>
+        <div class="photo-caption"><span>Forever glowing 💜</span></div>
+      </div>
+    </div>
+
+    <!-- 6 · PROFILE + WISH -->
+    <div class="sec-profile">
+      <div class="profile-wrapper">
+        <img src="IMG-20251214-WA0005.jpg" class="profile-picture" alt="Noluthando"/>
+        <!-- Inline party hat SVG — no external file needed -->
+        <svg class="party-hat" viewBox="0 0 80 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="hg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#e8698a"/>
+              <stop offset="100%" stop-color="#9b59b6"/>
+            </linearGradient>
+          </defs>
+          <polygon points="40,4 4,86 76,86" fill="url(#hg)"/>
+          <ellipse cx="40" cy="86" rx="36" ry="7" fill="#d63b6e" opacity=".65"/>
+          <circle cx="40" cy="6" r="5" fill="#fff5a0"/>
+          <circle cx="26" cy="47" r="2.5" fill="white" opacity=".38"/>
+          <circle cx="52" cy="36" r="2"   fill="white" opacity=".38"/>
+          <circle cx="37" cy="64" r="2"   fill="white" opacity=".38"/>
+          <circle cx="55" cy="59" r="1.5" fill="#fff5a0" opacity=".5"/>
+        </svg>
+      </div>
+      <div class="wish">
+        <h3 class="wish-hbd">Happy   Birthday!</h3>
+        <h5>MasterChef · Dreamer · Iqanda · World-shaker 💜</h5>
+      </div>
+    </div>
+
+    <!-- 7 · BALLOONS (generated by JS) -->
+    <div class="sec-balloons"><div class="baloons"></div></div>
+
+    <!-- 8 · EXPANDING CIRCLES -->
+    <div class="sec-circles">
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+      <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="20"/></svg>
+    </div>
+
+    <!-- 9 · FINAL MESSAGE -->
+    <div class="sec-final">
+      <p>Now go celebrate, superstar 🌸</p>
+      <p id="replay">Or click to watch again ↺</p>
+      <p class="last-smile">:)</p>
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    /* ── CURSOR ── */
+    const cur=document.getElementById('cursor'),crg=document.getElementById('cring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    (function aC(){rx+=(mx-rx)*.15;ry+=(my-ry)*.15;cur.style.left=mx+'px';cur.style.top=my+'px';crg.style.left=rx+'px';crg.style.top=ry+'px';requestAnimationFrame(aC);})();
+
+    /* ── FALLING PETALS / HEARTS ── */
+    const cv=document.getElementById('petalCanvas'),cx2=cv.getContext('2d');
+    function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
+    rsz();window.addEventListener('resize',rsz);
+    const PC=['#f7a8c4','#e8698a','#c8a5e0','#b07fd4','#d63b6e','#f0c5e0'];
+    class Petal{
+      constructor(){this.rst(true);}
+      rst(i){
+        this.x=Math.random()*innerWidth;this.y=i?Math.random()*innerHeight:-15;
+        this.s=2+Math.random()*3.5;this.vx=(Math.random()-.5)*.7;this.vy=.5+Math.random()*.9;
+        this.rot=Math.random()*Math.PI*2;this.vr=(Math.random()-.5)*.04;
+        this.col=PC[~~(Math.random()*PC.length)];this.a=.12+Math.random()*.28;this.h=Math.random()>.6;
+      }
+      upd(){this.x+=this.vx+Math.sin(this.y*.02)*.3;this.y+=this.vy;this.rot+=this.vr;if(this.y>innerHeight+10)this.rst(false);}
+      drw(){
+        cx2.save();cx2.translate(this.x,this.y);cx2.rotate(this.rot);cx2.globalAlpha=this.a;cx2.fillStyle=this.col;
+        if(this.h){const s=this.s*.7;cx2.beginPath();cx2.moveTo(0,-s*.3);cx2.bezierCurveTo(s*.5,-s,s*1.3,s*.2,0,s);cx2.bezierCurveTo(-s*1.3,s*.2,-s*.5,-s,0,-s*.3);cx2.fill();}
+        else{cx2.beginPath();cx2.ellipse(0,0,this.s,this.s*.5,0,0,Math.PI*2);cx2.fill();}
+        cx2.restore();
+      }
+    }
+    const pts=Array.from({length:32},()=>new Petal());
+    (function loop(){cx2.clearRect(0,0,cv.width,cv.height);pts.forEach(p=>{p.upd();p.drw();});requestAnimationFrame(loop);})();
+
+    /* ── BUILD BALLOONS ── */
+    const bWrap=document.querySelector('.baloons');
+    const bCols=['#f7a8c4','#e8698a','#d63b6e','#c8a5e0','#b07fd4','#9b59b6'];
+    for(let i=0;i<24;i++){
+      const b=document.createElement('div');b.className='balloon';
+      const c=bCols[i%bCols.length];
+      b.style.background=c;b.style.color=c;b.style.bottom='-130px';
+      if(i%3===0)      b.style.left=(Math.random()*18)+'%';
+      else if(i%3===1) b.style.right=(Math.random()*18)+'%';
+      else             b.style.left=(18+Math.random()*64)+'%';
+      bWrap.appendChild(b);
+    }
+
+    /* ── MAIN ANIMATION ── */
+    window.addEventListener('load',()=>{
+      Swal.fire({
+        title:'🎵 Play music?',
+        text:'For the full birthday experience!',
+        showCancelButton:true,
+        confirmButtonColor:'#e8698a',
+        cancelButtonColor:'#9b59b6',
+        confirmButtonText:'Yes please! 🎶',
+        cancelButtonText:'Skip',
+        background:'#2a0840',
+        color:'#ffffff',
+      }).then(res=>{
+        if(res.isConfirmed) document.querySelector('.song').play().catch(()=>{});
+        startTimeline();
+      });
+    });
+
+    function startTimeline(){
+      /* Split chatbox & wish-hbd text into per-character spans */
+      const chatEl=document.querySelector('.hbd-chatbox');
+      const hbdEl=document.querySelector('.wish-hbd');
+      chatEl.innerHTML=`<span>${chatEl.innerHTML.split('').join('</span><span>')}</span>`;
+      hbdEl.innerHTML=`<span>${hbdEl.innerHTML.split('').join('</span><span>')}</span>`;
+
+      const fi={opacity:0,y:-22,rotationX:5,skewX:'15deg'};
+      const fo={opacity:0,y:22,rotationY:5,skewX:'-15deg'};
+
+      const tl=gsap.timeline();
+      tl
+        /* Make container visible */
+        .to('.container',{visibility:'visible',duration:.01})
+
+        /* ─ 1. GREETING ─ */
+        .from('.sec-greeting',{opacity:0,y:15,duration:.85})
+        .from('.sub-greeting',{opacity:0,y:12,duration:.5})
+        .to('.sec-greeting',{opacity:0,y:12,duration:.7},'+=3')
+        .to('.sub-greeting',{opacity:0,y:12,duration:.5},'-=.35')
+
+        /* ─ 3. IT'S YOUR BIRTHDAY ─ */
+        .from('.sec-bday',{opacity:0,y:15,duration:.7})
+        .to('.sec-bday',{opacity:0,y:12,duration:.7},'+=2.5')
+
+        /* ─ 4. CHAT BUBBLE — typed character by character ─ */
+        .from('.sec-chat',{scale:.2,opacity:0,duration:.7})
+        .from('.fake-btn',{scale:.2,opacity:0,duration:.3})
+        .to('.hbd-chatbox span',{visibility:'visible',duration:.01,stagger:.022})
+        .to('.fake-btn',{background:'#d63b6e',duration:.2},'+=2.5')
+        .to('.sec-chat',{scale:.2,opacity:0,y:-150,duration:.5},'+=.8')
+
+        /* ─ 5. IDEA TEXT ─ */
+        .from('.idea-1',{...fi,duration:.7})
+        .to('.idea-1',{...fo,duration:.7},'+=2')
+        .from('.idea-2',{...fi,duration:.7})
+        .to('.idea-2',{...fo,duration:.7},'+=2')
+        .from('.idea-3',{...fi,duration:.7})
+        .to('.idea-3 strong',{scale:1.15,x:8,backgroundColor:'#d63b6e',color:'#fff',duration:.5})
+        .to('.idea-3',{...fo,duration:.7},'+=2')
+        .from('.idea-4',{...fi,duration:.7})
+        .to('.idea-4',{...fo,duration:.7},'+=2')
+        .from('.idea-5',{rotationX:15,rotationZ:-10,skewY:'-5deg',y:60,opacity:0,duration:.85},'+=1')
+        .to('.idea-5 span',{rotation:90,x:8,duration:.7},'+=1.2')
+        .to('.idea-5',{scale:.2,opacity:0,duration:.7},'+=1.5')
+        .from('.idea-6 span',{scale:3,opacity:0,rotation:15,ease:'expo.out',stagger:.2,duration:.8})
+        .to('.idea-6 span',{scale:3,opacity:0,rotation:-15,ease:'expo.out',stagger:.2,duration:.8},'+=1.5')
+
+        /* ─ POLAROID PHOTOS — fly in tilted, linger, fly out ─ */
+        .from('.photo-card',{
+          y:130,opacity:0,
+          rotation:i=>([-13,9,-7,11])[i]??0,
+          scale:.7,stagger:.16,duration:.78,ease:'back.out(1.2)'
+        })
+        .to('.photo-card',{y:-120,opacity:0,stagger:.1,duration:.55,ease:'power2.in'},'+=3.5')
+
+        /* ─ 6. PROFILE + WISH ─ */
+        .from('.profile-picture',{scale:3,opacity:0,x:22,y:-22,rotationZ:-45,duration:.65},'-=.2')
+        .from('.party-hat',{x:-100,y:260,rotation:-185,opacity:0,duration:.6})
+        .from('.wish-hbd span',{opacity:0,y:-50,rotation:150,skewX:'30deg',ease:'elastic.out(1,0.5)',stagger:.1,duration:.9})
+        .to('.wish-hbd span',{color:'#f7a8c4',stagger:.08,duration:.5},'<')
+        .from('.wish h5',{opacity:0,y:12,skewX:'-15deg',duration:.5},'<+=.05')
+
+        /* ─ 7. BALLOONS ─ */
+        .to('.baloons .balloon',{y:-1400,opacity:1,stagger:.11,duration:2.5,ease:'power1.out'},'-=.5')
+
+        /* ─ 8. EXPANDING CIRCLES ─ */
+        .to('.sec-circles svg',{visibility:'visible',opacity:0,scale:80,repeat:2,repeatDelay:.9,stagger:.3,duration:1.3})
+
+        /* Fade out profile section */
+        .to('.sec-profile',{opacity:0,y:28,duration:.5})
+
+        /* ─ 9. FINAL MESSAGE ─ */
+        .from('.sec-final p',{...fi,duration:.9,stagger:1.1})
+        .to('.last-smile',{rotation:90,duration:.5},'+=1');
+
+      /* REPLAY button */
+      document.getElementById('replay').addEventListener('click',()=>tl.restart());
+
+    }
+  </script>
+</body>
 </html>
